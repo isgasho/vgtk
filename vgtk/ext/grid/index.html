@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `grid` mod in crate `vgtk`."><meta name="keywords" content="rust, rustlang, rust-lang, grid"><title>vgtk::ext::grid - Rust</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../vgtk/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a><p class='location'>Module grid</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#traits">Traits</a></li></ul></div><p class='location'><a href='../../index.html'>vgtk</a>::<wbr><a href='../index.html'>ext</a></p><script>window.sidebarCurrent = {name: 'grid', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../../../src/vgtk/ext/grid.rs.html#1-214' title='goto source code'>[src]</a></span><span class='in-band'>Module <a href='../../index.html'>vgtk</a>::<wbr><a href='../index.html'>ext</a>::<wbr><a class="mod" href=''>grid</a></span></h1><div class='docblock'><p>Helper traits and structs for using the GTK Grid layout.</p>
+<p>This module enables using the GTK Grid for laying out widgets in a window.
+For example, the following snippet specifies a layout that will render to
+look something like this:</p>
+<pre><code class="language-text">   +--------------------------------------------------+
+   |         +-------------------------------------+  |
+   | Label1: | Text input                          |  |
+   |         +-------------------------------------+  |
+   |         +-------------------------------------+  |
+   | Label2: | Another bit of text                 |  |
+   |         +-------------------------------------+  |
+   |  +--------------------------------------------+  |
+   |  |                                            |  |
+   |  |                                            |  |
+   |  |                                            |  |
+   |  |              More stuff here               |  |
+   |  |                                            |  |
+   |  |                                            |  |
+   |  |                                            |  |
+   |  |                                            |  |
+   |  +--------------------------------------------+  |
+   |                                   +-----------+  |
+   |                                   | A Button  |  |
+   |                                   +-----------+  |
+   +--------------------------------------------------+
+</code></pre>
+
+<div class='information'><div class='tooltip ignore'>ⓘ<span class='tooltiptext'>This example is not tested</span></div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
+<span class="kw">use</span> <span class="ident">vgtk</span>::<span class="ident">ext</span>::<span class="ident">grid</span>::<span class="ident">GridExtHelpers</span>;
+
+<span class="kw">fn</span> <span class="ident">build</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VNode</span><span class="op">&lt;</span><span class="ident">Model</span><span class="op">&gt;</span> {
+  <span class="macro">gtk</span><span class="macro">!</span> {
+    <span class="op">&lt;</span><span class="ident">Grid</span> <span class="ident">row_spacing</span><span class="op">=</span><span class="number">10</span> <span class="ident">column_spacing</span><span class="op">=</span><span class="number">10</span><span class="op">&gt;</span>
+
+      <span class="comment">// --- Row 0 ---</span>
+
+      <span class="comment">// Widgets are placed by default in the top-left corner. So this</span>
+      <span class="comment">// label does not need any additional annotation.</span>
+      <span class="op">&lt;</span><span class="ident">Label</span> <span class="ident">label</span><span class="op">=</span><span class="string">&quot;Label1:&quot;</span> <span class="ident">halign</span><span class="op">=</span><span class="ident">Alilgn</span>::<span class="ident">End</span> <span class="op">/</span><span class="op">&gt;</span>
+
+      <span class="comment">// This text entry is being moved to column 2. We don&#39;t specify the</span>
+      <span class="comment">// the row because, again, by default it is placed in the first row</span>
+      <span class="comment">// which is what we want.</span>
+      <span class="op">&lt;</span><span class="ident">Entry</span> <span class="ident">Grid</span>::<span class="ident">left</span><span class="op">=</span><span class="number">1</span> <span class="ident">hexpand</span><span class="op">=</span><span class="bool-val">true</span> <span class="op">/</span><span class="op">&gt;</span>
+
+      <span class="comment">// --- Row 1 ---</span>
+
+      <span class="comment">// Leave the column at its default of 0 and set the row to 1.</span>
+      <span class="op">&lt;</span><span class="ident">Label</span> <span class="ident">label</span><span class="op">=</span><span class="string">&quot;Label2:&quot;</span> <span class="ident">Grid</span>::<span class="ident">top</span><span class="op">=</span><span class="number">1</span> <span class="ident">halign</span><span class="op">=</span><span class="ident">Alilgn</span>::<span class="ident">End</span> <span class="op">/</span><span class="op">&gt;</span>
+
+      <span class="comment">// Place this text entry in row 1 and column 1.</span>
+      <span class="op">&lt;</span><span class="ident">Entry</span> <span class="ident">Grid</span>::<span class="ident">left</span><span class="op">=</span><span class="number">1</span> <span class="ident">Grid</span>::<span class="ident">top</span><span class="op">=</span><span class="number">1</span> <span class="ident">hexpand</span><span class="op">=</span><span class="bool-val">true</span> <span class="op">/</span><span class="op">&gt;</span>
+
+      <span class="comment">// --- Row 2 ---</span>
+
+      <span class="comment">// We want the following widget to span the width of the grid and</span>
+      <span class="comment">// also consume excess vertical space.</span>
+      <span class="op">&lt;</span><span class="ident">ScrolledWindow</span> <span class="ident">Grid</span>::<span class="ident">top</span><span class="op">=</span><span class="number">2</span> <span class="ident">Grid</span>::<span class="ident">width</span><span class="op">=</span><span class="number">2</span> <span class="ident">hexpand</span><span class="op">=</span><span class="bool-val">true</span> <span class="ident">vexpand</span><span class="op">=</span><span class="bool-val">true</span><span class="op">&gt;</span>
+        <span class="op">&lt;</span><span class="ident">ListBox</span> <span class="op">/</span><span class="op">&gt;</span>
+      <span class="op">&lt;</span><span class="op">/</span><span class="ident">ScrolledWindow</span><span class="op">&gt;</span>
+
+      <span class="comment">// --- Row 3 ---</span>
+
+      <span class="comment">// We leave the first row unoccupied and only have a button in the second</span>
+      <span class="comment">// column.</span>
+      <span class="op">&lt;</span><span class="ident">Button</span> <span class="ident">label</span><span class="op">=</span><span class="string">&quot;A Button&quot;</span> <span class="ident">Grid</span>::<span class="ident">left</span><span class="op">=</span><span class="number">1</span> <span class="ident">Grid</span>::<span class="ident">top</span><span class="op">=</span><span class="number">3</span> <span class="ident">hexpand</span><span class="op">=</span><span class="bool-val">false</span> <span class="ident">halign</span><span class="op">=</span><span class="ident">Align</span>::<span class="ident">End</span> <span class="op">/</span><span class="op">&gt;</span>
+
+    <span class="op">&lt;</span><span class="op">/</span><span class="ident">Grid</span><span class="op">&gt;</span>
+  }
+}</pre></div>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table><tr class='module-item'><td><a class="struct" href="struct.Position.html" title='vgtk::ext::grid::Position struct'>Position</a></td><td class='docblock-short'><p>Specifies the position of a widget in the grid.</p>
+</td></tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table><tr class='module-item'><td><a class="trait" href="trait.GridExtHelpers.html" title='vgtk::ext::grid::GridExtHelpers trait'>GridExtHelpers</a></td><td class='docblock-short'><p>Helper trait for <code>Grid</code> layout.</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "vgtk";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script defer src="../../../search-index.js"></script></body></html>
